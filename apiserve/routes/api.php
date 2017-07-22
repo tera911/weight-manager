@@ -13,10 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
+Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::get('/login', 'Api\OauthLoginController@login')->name('login');
 Route::get('/cb', 'Api\OauthLoginController@callback');
 
+Route::get('/logout', function(){
+    \Auth::logout();
+    return "logout";
+});
