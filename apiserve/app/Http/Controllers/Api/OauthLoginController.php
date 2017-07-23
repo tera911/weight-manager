@@ -34,6 +34,9 @@ class OauthLoginController extends Controller
 
     public function login()
     {
+        if(\Auth::check()){
+            return redirect('/api/user');
+        }
         $authUrl = $this->provider->getAuthorizationUrl();
         return redirect($authUrl);
     }

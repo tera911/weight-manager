@@ -13,8 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth')->get('/user', function (Request $request) {
-    return $request->user();
+Route::options('{all}', function(){
+    return new Response('', 204);
+});
+
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('/user', 'Api\UserController@get');
+
+    Route::post('/user', 'Api\UserController@update');
+    Route::get('/dashboard', 'Api\UserController@dashboard');
 });
 
 Route::get('/login', 'Api\OauthLoginController@login')->name('login');
