@@ -1,0 +1,36 @@
+<div [hidden]="isNotLogin">
+  <p>名前:{{user.name}}</p>
+  <p>目標体重{{user.goal_weight}}</p>
+  <p>目標達成日:{{user.goal_date}}</p>
+  <a class="btn btn-danger" href="http://w.tera.jp/api/logout" target="_blank">ログアウト</a>
+</div>
+<div [hidden]="!isNotLogin">
+  <p>未ログイン</p>
+  <p class="btn btn-primary">
+    <a href="http://w.tera.jp/api/login" target="_blank">ログイン</a>
+  </p>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div style="display: block;">
+      <canvas baseChart width="400" height="400"
+              [options]="lineChartOptions"
+              [colors]="lineChartColors"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-bottom: 10px">
+    <table class="table table-responsive table-condensed">
+      <tr>
+        <th *ngFor="let label of chart.labels">{{label}}</th>
+      </tr>
+      <tr *ngFor="let d of chart.datasets">
+        <td *ngFor="let label of chart.labels; let j=index">{{d && d.data[j]}}</td>
+      </tr>
+    </table>
+    <button (click)="randomize()">CLICK</button>
+  </div>
+</div>
