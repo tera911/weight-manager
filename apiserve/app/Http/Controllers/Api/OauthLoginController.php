@@ -20,8 +20,8 @@ class OauthLoginController extends Controller
      */
     public function __construct()
     {
-        $clientId = '591125155016-0jjsvtjs2kvmq1rat1jm218tk0oe07q8.apps.googleusercontent.com';
-        $clientSecret = 'IVJF_kdXUsteA4f9GOB5N-W3';
+        $clientId = env('GOOGLE_CLIENT_ID');
+        $clientSecret = env('GOOGLE_CLIENT_SECRET');
         $redirectUri = env('APP_URL')."/api/cb";
 
         $this->provider = new \OAuthClient2Google([
