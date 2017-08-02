@@ -30,5 +30,5 @@ Route::get('/cb', 'Api\OauthLoginController@callback');
 
 Route::get('/logout', function(){
     \Auth::logout();
-    return redirect('http://w.tera.jp');
+    return redirect(env('APP_URL'));
 });

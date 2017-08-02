@@ -63,6 +63,6 @@ class OauthLoginController extends Controller
         }
 
         \Auth::login($userModel, true);
-        return redirect('http://w.tera.jp');
+        return redirect(env('APP_URL'));
     }
 }
