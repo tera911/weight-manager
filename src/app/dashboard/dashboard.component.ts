@@ -19,6 +19,9 @@ export class DashboardComponent implements OnInit {
 
     public user: any = {};
     public isNotLogin = false;
+    public weight: Number;
+    public is_add_show: boolean;
+    public plainData: any = [];
 
     @ViewChild(BaseChartDirective)
     public chart: BaseChartDirective;
@@ -26,25 +29,38 @@ export class DashboardComponent implements OnInit {
     constructor(private http: Http) {}
 
     public ngOnInit() {
-        this.http.get('http://w.tera.jp/api/user', { withCredentials: true }).subscribe(
+        this.http.get('/api/user').subscribe(
         response => {
                 this.user = response.json();
             },
             error => {
                 if (error.status === 401) {
+                    // this.router.navigateByUrl('/login');
                     this.isNotLogin = true;
                 }
             });
 
+        this.reloadDashboard();
+    }
+
+    private reloadDashboard(): void {
         this.fetchDashBoard().then(res => {
             this.chart.datasets = res.d;
             this.chart.labels = res.date;
             this.chart.ngOnChanges({});
+            let keys: Array<Object> = [];
+            for (const key in res.plain[0].data) {
+                keys.push({
+                    key: key,
+                    v: res.plain[0].data[key]
+                });
+            }
+            this.plainData = keys;
         });
     }
 
     private async  fetchDashBoard(): Promise<any>  {
-        const res = await this.http.get('Http://w.tera.jp/api/dashboard', { withCredentials: true }).toPromise();
+        const res = await this.http.get('/api/dashboard', { withCredentials: true }).toPromise();
         return res.json();
     }
 
@@ -53,20 +69,12 @@ export class DashboardComponent implements OnInit {
     };
     public lineChartColors: Array<any> = [
         { // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
+            backgroundColor: 'rgba(255,102,123,0.2)',
+            borderColor: 'rgba(255,102,123,1)',
+            pointBackgroundColor: 'rgba(255,100,123,1)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
             pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        },
-        { // dark grey
-            backgroundColor: 'rgba(77,83,96,0.2)',
-            borderColor: 'rgba(77,83,96,1)',
-            pointBackgroundColor: 'rgba(77,83,96,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(77,83,96,1)'
         },
         { // grey
             backgroundColor: 'rgba(148,159,177,0.2)',
@@ -104,4 +112,12 @@ export class DashboardComponent implements OnInit {
         console.log(e);
     }
 
+    public save(): void {
+        let p = this.http.post('/api/weight', {weight: this.weight}).toPromise();
+        this.weight = null;
+        this.is_add_show = false;
+        p.then(() => {
+            this.reloadDashboard();
+        });
+    }
 }

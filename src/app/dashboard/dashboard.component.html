@@ -2,16 +2,45 @@
   <p>名前:{{user.name}}</p>
   <p>目標体重{{user.goal_weight}}</p>
   <p>目標達成日:{{user.goal_date}}</p>
-  <a class="btn btn-danger" href="http://w.tera.jp/api/logout" target="_blank">ログアウト</a>
+  <a class="btn btn-danger" href="http://w.tera.jp/api/logout">ログアウト</a>
 </div>
 <div [hidden]="!isNotLogin">
   <p>未ログイン</p>
-  <p class="btn btn-primary">
-    <a href="http://w.tera.jp/api/login" target="_blank">ログイン</a>
-  </p>
+  <a class="btn btn-primary" href="http://w.tera.jp/api/login">ログイン</a>
 </div>
-<div class="row">
+
+<div class="row" [hidden]="isNotLogin">
+  <div class="col-md-3 col-md-offset-9">
+    <div class="btn-group">
+      <button class="btn btn-default" type="button" (click)="is_add_show=!(is_add_show)">体重追加</button>
+      <div [hidden]="!(is_add_show)">
+        <div class="form-group">
+          <label>体重
+            <input [(ngModel)]="weight" type="number"
+                   class="form-control">
+          </label>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" type="button" (click)="save()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col-md-12">
+    <table class="table table-responsive table-condensed">
+      <tr>
+        <td>日付</td>
+        <td>体重</td>
+      </tr>
+      <tr *ngFor="let d of plainData">
+        <td>{{d.key}}</td>
+        <td>{{d.v}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row" [hidden]="true">
+  <div class="col-md-6">
     <div style="display: block;">
       <canvas baseChart width="400" height="400"
               [options]="lineChartOptions"
@@ -22,7 +51,7 @@
               (chartClick)="chartClicked($event)"></canvas>
     </div>
   </div>
-  <div class="col-md-12" style="margin-bottom: 10px">
+  <div class="col-md-6" style="margin-bottom: 10px">
     <table class="table table-responsive table-condensed">
       <tr>
         <th *ngFor="let label of chart.labels">{{label}}</th>

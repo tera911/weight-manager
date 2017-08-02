@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::options('{all}', function(){
+Route::options('/{all}', function(){
     return new Response('', 204);
 });
 
@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::post('/user', 'Api\UserController@update');
     Route::get('/dashboard', 'Api\UserController@dashboard');
+    Route::post('/weight', 'Api\UserController@addWeight');
 });
 
 Route::get('/login', 'Api\OauthLoginController@login')->name('login');
@@ -29,5 +30,5 @@ Route::get('/cb', 'Api\OauthLoginController@callback');
 
 Route::get('/logout', function(){
     \Auth::logout();
-    return "logout";
+    return redirect('http://w.tera.jp');
 });
