@@ -122,18 +122,20 @@ class UserController extends Controller
                 })
             ];
         });
-        /** @var Collection $plotData */
-        $plotData = clone $graphList->first()['data'];
-        $plotData->pop();
-        $plotData->push(65);
 
-        $graphList = collect($graphList)->merge([
-            [
-                'label' => '目標',
-                'data' => $plotData
-            ]
-        ]);
+        if($graphList->isNotEmpty()){
+            /** @var Collection $plotData */
+            $plotData = clone $graphList->first()['data'];
+            $plotData->pop();
+            $plotData->push(65);
 
+            $graphList = collect($graphList)->merge([
+                [
+                    'label' => '目標',
+                    'data' => $plotData
+                ]
+            ]);
+        }
         return [
             'd' => $graphList->values(),
             'date' => $dateList->values(),

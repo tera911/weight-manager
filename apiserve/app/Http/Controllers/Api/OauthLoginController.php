@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\OAuth2\Client\Provider\Google;
@@ -59,6 +60,7 @@ class OauthLoginController extends Controller
             $userModel = new User();
             $userModel->name = $user->getName();
             $userModel->google_auth_id = $user->getId();
+            $userModel->goal_date = Carbon::now()->addMonth(2);
             $userModel->save();
         }
 
