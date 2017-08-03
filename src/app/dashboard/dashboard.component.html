@@ -2,11 +2,11 @@
   <p>名前:{{user.name}}</p>
   <p>目標体重{{user.goal_weight}}</p>
   <p>目標達成日:{{user.goal_date}}</p>
-  <a class="btn btn-danger" href="http://w.tera.jp/api/logout">ログアウト</a>
+  <a class="btn btn-danger" href="/api/logout">ログアウト</a>
 </div>
 <div [hidden]="!isNotLogin">
   <p>未ログイン</p>
-  <a class="btn btn-primary" href="http://w.tera.jp/api/login">ログイン</a>
+  <a class="btn btn-primary" href="/api/login">ログイン</a>
 </div>
 
 <div class="row" [hidden]="isNotLogin">
